@@ -41,9 +41,8 @@ export class ShepherdTour extends Component {
     } = this.props
 
     const tourObject = new Shepherd.Tour({
-      confirmCancel,
-      confirmCancelMessage,
       defaultStepOptions,
+      disableScroll,
       tourName,
       useModalOverlay
     })
@@ -55,7 +54,7 @@ export class ShepherdTour extends Component {
     this.tourObject = tourObject
     this.tourState = {
       tourObject: this.tourObject,
-      disableScroll: false,
+      disableScroll: disableScroll,
       isActive: false,
       startTour: this.startTour
     }
@@ -81,7 +80,7 @@ export class ShepherdTour extends Component {
     }
 
     steps.forEach((step, index) => {
-      const { id, options } = step
+      const {options} = step
 
       if (options.buttons) {
         options.buttons = options.buttons.map(
@@ -97,7 +96,7 @@ export class ShepherdTour extends Component {
       }
 
       // options.attachTo = normalizeAttachTo(options.attachTo)
-      tour.addStep(id, options)
+      tour.addStep(options)
 
       // Step up events for the current step
       const currentStep = tour.steps[index]
