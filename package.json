@@ -1,6 +1,6 @@
 {
   "name": "react-shepherd",
-  "version": "v0.2.1-custom",
+  "version": "0.2.1-custom",
   "description": "A React wrapper for the site tour library Shepherd",
   "license": "MIT",
   "repository": "shipshapecode/react-shepherd",
