@@ -20,12 +20,11 @@ const ShepherdTourContextConsumer = ShepherdTourContext.Consumer
 export class ShepherdTour extends Component {
   static propTypes = {
     children: PropTypes.node,
-    confirmCancel: PropTypes.bool,
-    confirmCancelMessage: PropTypes.string,
     defaultStepOptions: PropTypes.object,
     tourName: PropTypes.string,
     steps: PropTypes.array,
-    useModalOverlay: PropTypes.bool
+    useModalOverlay: PropTypes.bool,
+    disableScroll: PropTypes.bool
   }
 
   constructor(props) {
@@ -35,9 +34,9 @@ export class ShepherdTour extends Component {
     this._bindMethods(internalMethods)
 
     const {
-      confirmCancel,
-      confirmCancelMessage,
+      
       defaultStepOptions,
+      disableScroll,
       tourName,
       useModalOverlay,
       steps
@@ -57,6 +56,7 @@ export class ShepherdTour extends Component {
 
     this.tourObject = tourObject
     this.tourState = {
+      tourObject: this.tourObject,
       disableScroll: false,
       isActive: false,
       startTour: this.startTour
