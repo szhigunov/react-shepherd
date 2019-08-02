@@ -32,7 +32,6 @@ export class ShepherdTour extends Component {
     this._bindMethods(internalMethods)
 
     const {
-      
       defaultStepOptions,
       disableScroll,
       tourName,
@@ -54,7 +53,6 @@ export class ShepherdTour extends Component {
     this.tourObject = tourObject
     this.tourState = {
       tourObject: this.tourObject,
-      disableScroll: disableScroll,
       isActive: false,
       startTour: this.startTour
     }
@@ -62,9 +60,7 @@ export class ShepherdTour extends Component {
     this.addSteps(steps)
   }
 
-  componentWillUnmount() {
-    this._cleanup()
-  }
+  componentWillUnmount() {}
 
   /**
    * Take a set of steps and create a tour object based on the current configuration
@@ -104,17 +100,9 @@ export class ShepherdTour extends Component {
       if (!currentStep.options.scrollToHandler) {
         currentStep.options.scrollToHandler = (elem) => {
           // Allow scrolling so scrollTo works.
-          this.tourState.disableScroll.off(window)
-
           if (typeof elem !== 'undefined') {
             elem.scrollIntoView()
           }
-
-          setTimeout(() => {
-            if (this.tourState.disableScroll) {
-              this.tourState.disableScroll.on(window)
-            }
-          }, 50)
         }
       }
     })
@@ -184,10 +172,6 @@ export class ShepherdTour extends Component {
    * When the tour starts, setup the step event listeners, and disableScroll
    */
   onTourStart() {
-    if (this.tourState.disableScroll) {
-      this.tourState.disableScroll.on(window)
-    }
-
     Shepherd.trigger('start')
   }
 
@@ -198,7 +182,6 @@ export class ShepherdTour extends Component {
   onTourFinish(completeOrCancel) {
     this.tourState.isActive = false
 
-    this._cleanup()
     Shepherd.trigger(completeOrCancel)
   }
 
@@ -211,16 +194,6 @@ export class ShepherdTour extends Component {
     methods.map((method) => {
       this[method] = this[method].bind(this)
     })
-  }
-
-  /**
-   * Cleanup disableScroll
-   * @private
-   */
-  _cleanup() {
-    if (this.disableScroll) {
-      this.tourState.disableScroll.off(window)
-    }
   }
 
   render() {

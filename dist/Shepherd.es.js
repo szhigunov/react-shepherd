@@ -10033,7 +10033,6 @@ function (_Component) {
     _this.tourObject = tourObject;
     _this.tourState = {
       tourObject: _this.tourObject,
-      disableScroll: disableScroll,
       isActive: false,
       startTour: _this.startTour
     };
@@ -10045,9 +10044,7 @@ function (_Component) {
 
   _createClass(ShepherdTour, [{
     key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      this._cleanup();
-    }
+    value: function componentWillUnmount() {}
     /**
      * Take a set of steps and create a tour object based on the current configuration
      * @param {Array} steps An array of steps
@@ -10057,8 +10054,6 @@ function (_Component) {
   }, {
     key: "addSteps",
     value: function addSteps(steps) {
-      var _this2 = this;
-
       var tour = this.tourObject; // Return nothing if there are no steps
 
       if (!steps.length) {
@@ -10089,17 +10084,9 @@ function (_Component) {
         if (!currentStep.options.scrollToHandler) {
           currentStep.options.scrollToHandler = function (elem) {
             // Allow scrolling so scrollTo works.
-            _this2.tourState.disableScroll.off(window);
-
             if (typeof elem !== 'undefined') {
               elem.scrollIntoView();
             }
-
-            setTimeout(function () {
-              if (_this2.tourState.disableScroll) {
-                _this2.tourState.disableScroll.on(window);
-              }
-            }, 50);
           };
         }
       });
@@ -10185,10 +10172,6 @@ function (_Component) {
   }, {
     key: "onTourStart",
     value: function onTourStart() {
-      if (this.tourState.disableScroll) {
-        this.tourState.disableScroll.on(window);
-      }
-
       Shepherd.trigger('start');
     }
     /**
@@ -10200,9 +10183,6 @@ function (_Component) {
     key: "onTourFinish",
     value: function onTourFinish(completeOrCancel) {
       this.tourState.isActive = false;
-
-      this._cleanup();
-
       Shepherd.trigger(completeOrCancel);
     }
     /**
@@ -10214,23 +10194,11 @@ function (_Component) {
   }, {
     key: "_bindMethods",
     value: function _bindMethods(methods) {
-      var _this3 = this;
+      var _this2 = this;
 
       methods.map(function (method) {
-        _this3[method] = _this3[method].bind(_this3);
+        _this2[method] = _this2[method].bind(_this2);
       });
-    }
-    /**
-     * Cleanup disableScroll
-     * @private
-     */
-
-  }, {
-    key: "_cleanup",
-    value: function _cleanup() {
-      if (this.disableScroll) {
-        this.tourState.disableScroll.off(window);
-      }
     }
   }, {
     key: "render",
